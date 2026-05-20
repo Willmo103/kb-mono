@@ -1,0 +1,18 @@
+[project]
+name = "kb-mono"
+version = "0.1.0"
+authors = [
+    { name = "WIll Morris", email = "88165849+Willmo103@users.noreply.github.com" }
+]
+requires-python = ">=3.13"
+
+[tool.uv.workspace]
+members = [
+    "packages/kb-core",
+    "packages/kb-models",
+    "kb-docs",
+    "apps/kb-image",
+    "apps/kb-repo",
+    "apps/kb-vault",
+    "apps/kb-docs",
+]
