@@ -1,4 +1,5 @@
-.git/
 logs/
 data
 !.gitkeep
+.vscode/
+.idea/

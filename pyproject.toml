@@ -15,4 +15,5 @@ members = [
     "apps/kb-repo",
     "apps/kb-vault",
     "apps/kb-docs",
+    "apps/kb-sms/apps/kb-sms",
 ]
