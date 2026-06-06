@@ -8,6 +8,23 @@ import subprocess
 import typer
 from rich.console import Console
 from rich.panel import Panel
+import sys
+
+
+def get_uv_cmd() -> str:
+    import shutil
+    
+    uv_path = shutil.which("uv")
+    if uv_path:
+        return uv_path
+        
+    local_bin = Path.home() / ".local" / "bin"
+    candidate = local_bin / ("uv.exe" if sys.platform == "win32" else "uv")
+    if candidate.exists():
+        return str(candidate)
+        
+    return "uv"
+
 
 app = typer.Typer(help="Run pre-commit checks on a package submodule")
 console = Console()
@@ -72,10 +89,11 @@ def check(
 
     # 2. Run Ruff lint/format check if ruff is available
     console.print("\n[cyan]Checking code style and formatting (Ruff)...[/]")
+    uv_cmd = get_uv_cmd()
     try:
         # Check if ruff is runnable in uv context or system
         linter_res = subprocess.run(
-            ["uv", "run", "ruff", "check", "."],
+            [uv_cmd, "run", "ruff", "check", "."],
             cwd=repo_path, capture_output=True, text=True
         )
         if linter_res.returncode == 0:
@@ -106,7 +124,7 @@ def check(
         console.print("\n[cyan]Running unit tests (Pytest)...[/]")
         try:
             test_res = subprocess.run(
-                ["uv", "run", "pytest"],
+                [uv_cmd, "run", "pytest"],
                 cwd=repo_path, capture_output=True, text=True
             )
             if test_res.returncode == 0:

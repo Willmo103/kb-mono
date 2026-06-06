@@ -5,6 +5,16 @@ All notable changes to the KB Stack Monorepo will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2026-06-06
+
+### Changed
+- Configured Electron build configurations for `kb-clipboard`, `kb-rss`, and `kb-image` to output both portable and NSIS installer formats on Windows.
+- Added native Windows `.ico` icons in `desktop/package.json` for all three Electron desktop apps to fix installer compile issues.
+- Updated python `build.py` scripts to filter setup installers and only package the portable app.
+- Updated python `build.py` scripts to dynamically resolve `uv` executable paths on systems where `uv` is not globally in `PATH`.
+- Fixed CLI command bridges inside `kb-rss` and `kb-image` desktop apps to execute the globally installed CLI commands directly in production rather than executing `uv run`.
+- Enabled `desktop_dist` assets packaging for `kb-image` by adding the `tool.uv.build-backend` config to its `pyproject.toml`.
+
 ## [0.1.0] - 2026-06-06
 
 ### Added
