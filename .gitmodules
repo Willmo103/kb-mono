@@ -1,0 +1,30 @@
+[submodule "remotes/kb-core"]
+	path = remotes/kb-core
+	url = ../kb-core
+[submodule "remotes/kb-clipboard"]
+	path = remotes/kb-clipboard
+	url = ../kb-clipboard
+[submodule "remotes/kb-image"]
+	path = remotes/kb-image
+	url = ../kb-image
+[submodule "remotes/kb-rss"]
+	path = remotes/kb-rss
+	url = ../kb-rss
+[submodule "remotes/kb-web"]
+	path = remotes/kb-web
+	url = ../kb-web
+[submodule "remotes/kb-wiki"]
+	path = remotes/kb-wiki
+	url = ../kb-wiki
+[submodule "remotes/kb-network"]
+	path = remotes/kb-network
+	url = ../kb-network
+[submodule "remotes/kb-network-agent"]
+	path = remotes/kb-network-agent
+	url = ../kb-network-agent
+[submodule "remotes/kb-vault"]
+	path = remotes/kb-vault
+	url = ../kb-vault
+[submodule "remotes/kb-repo"]
+	path = remotes/kb-repo
+	url = ../kb-repo

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Workspace Input Form</title>
+  <!-- Google Fonts: Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --font-family: 'Outfit', sans-serif;
+      --bg-primary: #fdf6e3;
+      --bg-secondary: #eee8d5;
+      --text-primary: #586e75;
+      --text-secondary: #657b83;
+      --text-muted: #93a1a1;
+      --accent: #268bd2;
+      --accent-hover: #1a6fa8;
+      --success: #859900;
+      --warning: #b58900;
+      --danger: #dc322f;
+      --orange: #cb4b16;
+      --border-color: #d3c7a1;
+      --shadow: 0 10px 30px rgba(88, 110, 117, 0.15);
+      --border-radius: 12px;
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-primary: #002b36;
+        --bg-secondary: #073642;
+        --text-primary: #93a1a1;
+        --text-secondary: #839496;
+        --text-muted: #586e75;
+        --border-color: #586e75;
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 2rem 1.5rem;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      transition: var(--transition);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      background-color: var(--bg-secondary);
+      border-radius: var(--border-radius);
+      padding: 2.5rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    header {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-weight: 700;
+      font-size: 2rem;
+      color: var(--orange);
+      margin-bottom: 0.5rem;
+    }
+
+    p.subtitle {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      font-weight: 300;
+    }
+
+    .section {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .section-title {
+      font-weight: 600;
+      font-size: 1.25rem;
+      color: var(--accent);
+      border-left: 4px solid var(--accent);
+      padding-left: 0.75rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    label {
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      font-family: var(--font-family);
+      font-size: 1rem;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      outline: none;
+      transition: var(--transition);
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(38, 139, 210, 0.15);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    /* Dynamic Item rows */
+    .row-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .item-row {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      background-color: var(--bg-primary);
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Buttons */
+    .btn {
+      font-family: var(--font-family);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0.75rem 1.25rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      border: 2px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--text-secondary);
+    }
+
+    .btn-danger {
+      background-color: var(--danger);
+      color: #ffffff;
+    }
+
+    .btn-danger:hover {
+      opacity: 0.9;
+    }
+
+    .btn-success {
+      background-color: var(--success);
+      color: #ffffff;
+    }
+
+    .btn-success:hover {
+      opacity: 0.9;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-actions {
+      border-top: 2px solid var(--border-color);
+      padding-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    /* Toast Notification */
+    #toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background-color: var(--success);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transform: translateY(150%);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 1000;
+    }
+
+    #toast.show {
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1 id="form-title">Workspace Configurator</h1>
+      <p class="subtitle" id="form-subtitle">Configure settings and export options directly back to your agent workspace.</p>
+    </header>
+
+    <!-- Main dynamic form -->
+    <form id="dynamic-form" class="section">
+      <div class="section-title">General Information</div>
+      
+      <div class="form-group">
+        <label for="config-name">Configuration Name</label>
+        <input type="text" id="config-name" placeholder="My Awesome Config">
+      </div>
+
+      <div class="form-group">
+        <label for="config-desc">Description</label>
+        <textarea id="config-desc" placeholder="Describe the purpose of this configuration..."></textarea>
+      </div>
+
+      <div class="section-title">Dynamic Parameters</div>
+      <div class="row-list" id="param-list">
+        <!-- Rows will be added here dynamically -->
+      </div>
+      
+      <div>
+        <button type="button" class="btn btn-secondary" onclick="addParamRow()">+ Add Parameter</button>
+      </div>
+    </form>
+
+    <!-- Actions Footer -->
+    <div class="footer-actions">
+      <div class="button-group">
+        <button type="button" class="btn btn-secondary" onclick="loadFromFile()">📁 Load Existing JSON</button>
+      </div>
+      <div class="button-group">
+        <button type="button" class="btn btn-primary" onclick="saveToFile()">💾 Save JSON to Workspace</button>
+        <button type="button" class="btn btn-success" onclick="downloadFallback()">📥 Download JSON</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast">Changes saved successfully!</div>
+
+  <script>
+    // PREPOPULATED_DATA: The agent can inject custom data into this variable when generating the file.
+    // E.g., const PREPOPULATED_DATA = { name: "Project", desc: "...", params: [...] };
+    const PREPOPULATED_DATA = {
+      name: "Default Config",
+      desc: "This is a pre-populated configuration description.",
+      params: [
+        { key: "env", value: "development" },
+        { key: "port", value: "8080" }
+      ]
+    };
+
+    // Keep track of the active FileSystemFileHandle
+    let fileHandle = null;
+
+    // Load initial data
+    window.addEventListener('DOMContentLoaded', () => {
+      loadFormData(PREPOPULATED_DATA);
+    });
+
+    // Populate UI from object
+    function loadFormData(data) {
+      if (!data) return;
+      if (data.name) document.getElementById('config-name').value = data.name;
+      if (data.desc) document.getElementById('config-desc').value = data.desc;
+      
+      const paramList = document.getElementById('param-list');
+      paramList.innerHTML = '';
+      
+      if (data.params && Array.isArray(data.params)) {
+        data.params.forEach(p => addParamRow(p.key, p.value));
+      } else {
+        addParamRow(); // Add one default empty row
+      }
+    }
+
+    // Add a parameter row
+    function addParamRow(key = '', value = '') {
+      const container = document.getElementById('param-list');
+      const rowId = 'row-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+      
+      const row = document.createElement('div');
+      row.className = 'item-row';
+      row.id = rowId;
+      row.innerHTML = `
+        <input type="text" placeholder="Key (e.g. host)" value="${key}" style="flex: 1;" class="row-key">
+        <input type="text" placeholder="Value (e.g. localhost)" value="${value}" style="flex: 2;" class="row-val">
+        <button type="button" class="btn btn-danger" onclick="document.getElementById('${rowId}').remove()" style="padding: 0.75rem;">Delete</button>
+      `;
+      container.appendChild(row);
+    }
+
+    // Collect data from UI into a JS Object
+    function getFormData() {
+      const name = document.getElementById('config-name').value;
+      const desc = document.getElementById('config-desc').value;
+      
+      const params = [];
+      document.querySelectorAll('.item-row').forEach(row => {
+        const key = row.querySelector('.row-key').value.trim();
+        const value = row.querySelector('.row-val').value.trim();
+        if (key) {
+          params.push({ key, value });
+        }
+      });
+
+      return {
+        name,
+        desc,
+        params,
+        lastUpdated: new Date().toISOString()
+      };
+    }
+
+    // Toast UI feedback helper
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.innerText = message;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // --- File IO Methods ---
+
+    // File System Access API: Save JSON
+    async function saveToFile() {
+      const data = getFormData();
+      const jsonString = JSON.stringify(data, null, 2);
+
+      try {
+        if (!fileHandle) {
+          // Verify capability
+          if (!window.showSaveFilePicker) {
+            throw new Error("File System Access API is not supported in this browser. Please use 'Download JSON' instead.");
+          }
+          
+          fileHandle = await window.showSaveFilePicker({
+            suggestedName: 'user_input_data.json',
+            types: [{
+              description: 'JSON Files',
+              accept: { 'application/json': ['.json'] },
+            }],
+          });
+        }
+
+        const writable = await fileHandle.createWritable();
+        await writable.write(jsonString);
+        await writable.close();
+        
+        showToast("Successfully saved to workspace!");
+      } catch (err) {
+        console.error(err);
+        if (err.name !== 'AbortError') {
+          alert("Error saving file: " + err.message);
+        }
+      }
+    }
+
+    // Standard Download fallback
+    function downloadFallback() {
+      const data = getFormData();
+      const jsonString = JSON.stringify(data, null, 2);
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'user_input_data.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      showToast("Download triggered. Please save into your workspace scratch folder.");
+    }
+
+    // File System Access API / File Uploader: Load JSON
+    async function loadFromFile() {
+      try {
+        if (window.showOpenFilePicker) {
+          const [handle] = await window.showOpenFilePicker({
+            types: [{
+              description: 'JSON Files',
+              accept: { 'application/json': ['.json'] },
+            }],
+          });
+          fileHandle = handle;
+          const file = await fileHandle.getFile();
+          const text = await file.text();
+          const data = JSON.parse(text);
+          loadFormData(data);
+          showToast("Loaded data successfully!");
+        } else {
+          // File input fallback
+          const input = document.createElement('input');
+          input.type = 'file';
+          input.accept = '.json';
+          input.onchange = async (e) => {
+            const file = e.target.files[0];
+            const text = await file.text();
+            const data = JSON.parse(text);
+            loadFormData(data);
+            showToast("Loaded data successfully!");
+          };
+          input.click();
+        }
+      } catch (err) {
+        console.error(err);
+        if (err.name !== 'AbortError') {
+          alert("Failed to read file: " + err.message);
+        }
+      }
+    }
+  </script>
+</body>
+</html>

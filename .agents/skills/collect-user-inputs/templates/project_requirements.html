@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Requirements Configurator</title>
+  <!-- Google Fonts: Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --font-family: 'Outfit', sans-serif;
+      --bg-primary: #fdf6e3;
+      --bg-secondary: #eee8d5;
+      --text-primary: #586e75;
+      --text-secondary: #657b83;
+      --text-muted: #93a1a1;
+      --accent: #268bd2;
+      --accent-hover: #1a6fa8;
+      --success: #859900;
+      --warning: #b58900;
+      --danger: #dc322f;
+      --orange: #cb4b16;
+      --border-color: #d3c7a1;
+      --shadow: 0 10px 30px rgba(88, 110, 117, 0.15);
+      --border-radius: 12px;
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-primary: #002b36;
+        --bg-secondary: #073642;
+        --text-primary: #93a1a1;
+        --text-secondary: #839496;
+        --text-muted: #586e75;
+        --border-color: #586e75;
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 2rem 1.5rem;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      transition: var(--transition);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      background-color: var(--bg-secondary);
+      border-radius: var(--border-radius);
+      padding: 2.5rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    header {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-weight: 700;
+      font-size: 2rem;
+      color: var(--orange);
+      margin-bottom: 0.5rem;
+    }
+
+    p.subtitle {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      font-weight: 300;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 600px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .section-title {
+      font-weight: 600;
+      font-size: 1.25rem;
+      color: var(--accent);
+      border-left: 4px solid var(--accent);
+      padding-left: 0.75rem;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-group-full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      font-family: var(--font-family);
+      font-size: 1rem;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      outline: none;
+      transition: var(--transition);
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(38, 139, 210, 0.15);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .list-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .item-card {
+      background-color: var(--bg-primary);
+      padding: 1.25rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      position: relative;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .item-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .item-card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    /* Buttons */
+    .btn {
+      font-family: var(--font-family);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0.75rem 1.25rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      border: 2px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--text-secondary);
+    }
+
+    .btn-danger {
+      background-color: var(--danger);
+      color: #ffffff;
+    }
+
+    .btn-danger:hover {
+      opacity: 0.9;
+    }
+
+    .btn-success {
+      background-color: var(--success);
+      color: #ffffff;
+    }
+
+    .btn-success:hover {
+      opacity: 0.9;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-actions {
+      border-top: 2px solid var(--border-color);
+      padding-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    #toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background-color: var(--success);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transform: translateY(150%);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 1000;
+    }
+
+    #toast.show {
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Project Requirements Specifier</h1>
+      <p class="subtitle">Define core details, select the database architecture, layout features, and add project dependencies.</p>
+    </header>
+
+    <form id="project-form" class="section">
+      <div class="section-title">General Specifications</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="proj-name">Project Name</label>
+          <input type="text" id="proj-name" placeholder="e.g. my-awesome-app">
+        </div>
+
+        <div class="form-group">
+          <label for="proj-type">Application Type</label>
+          <select id="proj-type">
+            <option value="Standalone App">Standalone App (apps/)</option>
+            <option value="Startup Incubator Project">Startup incubator Project (projects/)</option>
+            <option value="Internal Library/Tool">Internal Library/Tool (internal/)</option>
+          </select>
+        </div>
+
+        <div class="form-group-full form-group">
+          <label for="proj-desc">Project Description</label>
+          <textarea id="proj-desc" placeholder="Describe the application goals, audience, and behavior..."></textarea>
+        </div>
+      </div>
+
+      <div class="section-title">Tech Stack & Architecture</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="proj-lang">Primary Language</label>
+          <select id="proj-lang" onchange="adjustStackDefaults()">
+            <option value="Python">Python (via uv)</option>
+            <option value="TypeScript/JavaScript">TypeScript / JavaScript (via bun)</option>
+            <option value="C#">C# (.NET)</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="proj-db">Database Engine</label>
+          <select id="proj-db">
+            <option value="SQLite">SQLite (via sqlite-utils)</option>
+            <option value="PostgreSQL">PostgreSQL (via SQLAlchemy ORM)</option>
+            <option value="None">None / InMemory / Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="proj-framework">Web / CLI Framework</label>
+          <input type="text" id="proj-framework" placeholder="e.g. FastAPI / Typer">
+        </div>
+
+        <div class="form-group">
+          <label for="proj-dist">Build/Distribution Channel</label>
+          <input type="text" id="proj-dist" placeholder="e.g. Docker Compose, Executable Binary">
+        </div>
+      </div>
+
+      <div class="section-title">Key Features List</div>
+      <div class="list-container" id="features-list">
+        <!-- Features inserted dynamically -->
+      </div>
+      <div>
+        <button type="button" class="btn btn-secondary" onclick="addFeatureCard()">+ Add Key Feature</button>
+      </div>
+
+      <div class="section-title">Core Dependencies & Packages</div>
+      <div class="list-container" id="deps-list">
+        <!-- Dependencies inserted dynamically -->
+      </div>
+      <div>
+        <button type="button" class="btn btn-secondary" onclick="addDependencyCard()">+ Add Dependency</button>
+      </div>
+    </form>
+
+    <!-- Actions Footer -->
+    <div class="footer-actions">
+      <div class="button-group">
+        <button type="button" class="btn btn-secondary" onclick="loadFromFile()">📁 Load Existing JSON</button>
+      </div>
+      <div class="button-group">
+        <button type="button" class="btn btn-primary" onclick="saveToFile()">💾 Save JSON to Workspace</button>
+        <button type="button" class="btn btn-success" onclick="downloadFallback()">📥 Download JSON</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast">Requirements saved successfully!</div>
+
+  <script>
+    // PREPOPULATED_DATA: Can be customized by the agent on creation
+    const PREPOPULATED_DATA = {
+      name: "my-data-service",
+      type: "Standalone App",
+      description: "A secure microservice to ingest and parse telemetry logs.",
+      language: "Python",
+      database: "SQLite",
+      framework: "FastAPI",
+      distribution: "Docker Compose",
+      features: [
+        { name: "Ingestion API", desc: "POST endpoint accepting JSON payload representing logs.", priority: "High" },
+        { name: "SQLite Writer", desc: "Pydantic parsing and sqlite-utils upsert implementation.", priority: "High" }
+      ],
+      dependencies: [
+        { name: "pydantic", purpose: "Data modeling and validations" },
+        { name: "sqlite-utils", purpose: "SQLite lightweight manager" }
+      ]
+    };
+
+    let fileHandle = null;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadFormData(PREPOPULATED_DATA);
+    });
+
+    function loadFormData(data) {
+      if (!data) return;
+      if (data.name) document.getElementById('proj-name').value = data.name;
+      if (data.type) document.getElementById('proj-type').value = data.type;
+      if (data.description) document.getElementById('proj-desc').value = data.description;
+      if (data.language) document.getElementById('proj-lang').value = data.language;
+      if (data.database) document.getElementById('proj-db').value = data.database;
+      if (data.framework) document.getElementById('proj-framework').value = data.framework;
+      if (data.distribution) document.getElementById('proj-dist').value = data.distribution;
+      
+      const featuresList = document.getElementById('features-list');
+      featuresList.innerHTML = '';
+      if (data.features && Array.isArray(data.features)) {
+        data.features.forEach(f => addFeatureCard(f.name, f.desc, f.priority));
+      } else {
+        addFeatureCard();
+      }
+
+      const depsList = document.getElementById('deps-list');
+      depsList.innerHTML = '';
+      if (data.dependencies && Array.isArray(data.dependencies)) {
+        data.dependencies.forEach(d => addDependencyCard(d.name, d.purpose));
+      } else {
+        addDependencyCard();
+      }
+    }
+
+    function addFeatureCard(name = '', desc = '', priority = 'Medium') {
+      const container = document.getElementById('features-list');
+      const cardId = 'feat-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5);
+      
+      const card = document.createElement('div');
+      card.className = 'item-card';
+      card.id = cardId;
+      card.innerHTML = `
+        <div class="item-card-header">
+          <input type="text" class="feat-name table-input" placeholder="Feature Name (e.g. Authentication)" value="${name}" style="font-weight: 600; width: 70%;">
+          <select class="feat-priority" style="width: 25%;">
+            <option value="High" ${priority === 'High' ? 'selected' : ''}>🔥 High</option>
+            <option value="Medium" ${priority === 'Medium' ? 'selected' : ''}>⚡ Medium</option>
+            <option value="Low" ${priority === 'Low' ? 'selected' : ''}>💤 Low</option>
+          </select>
+        </div>
+        <textarea class="feat-desc table-input" placeholder="Describe requirements, edge cases, and expected behaviors...">${desc}</textarea>
+        <button type="button" class="btn btn-danger" onclick="document.getElementById('${cardId}').remove()" style="align-self: flex-end; padding: 0.4rem 0.8rem; font-size: 0.85rem;">Delete</button>
+      `;
+      container.appendChild(card);
+    }
+
+    function addDependencyCard(name = '', purpose = '') {
+      const container = document.getElementById('deps-list');
+      const cardId = 'dep-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5);
+      
+      const card = document.createElement('div');
+      card.className = 'item-card';
+      card.id = cardId;
+      card.innerHTML = `
+        <div class="item-card-grid">
+          <div class="form-group">
+            <label>Package/Library Name</label>
+            <input type="text" class="dep-name table-input" placeholder="e.g. httpx" value="${name}">
+          </div>
+          <div class="form-group">
+            <label>Usage Purpose</label>
+            <input type="text" class="dep-purpose table-input" placeholder="e.g. Call third party endpoints" value="${purpose}">
+          </div>
+        </div>
+        <button type="button" class="btn btn-danger" onclick="document.getElementById('${cardId}').remove()" style="align-self: flex-end; padding: 0.4rem 0.8rem; font-size: 0.85rem;">Delete</button>
+      `;
+      container.appendChild(card);
+    }
+
+    function adjustStackDefaults() {
+      const lang = document.getElementById('proj-lang').value;
+      const dbSelect = document.getElementById('proj-db');
+      const frameworkInput = document.getElementById('proj-framework');
+      
+      if (lang === 'Python') {
+        dbSelect.value = 'SQLite';
+        frameworkInput.value = 'FastAPI';
+      } else if (lang === 'TypeScript/JavaScript') {
+        dbSelect.value = 'SQLite';
+        frameworkInput.value = 'Express / Elysia';
+      } else if (lang === 'C#') {
+        dbSelect.value = 'PostgreSQL';
+        frameworkInput.value = 'ASP.NET Core Web API';
+      }
+    }
+
+    function getFormData() {
+      const features = [];
+      document.querySelectorAll('#features-list .item-card').forEach(card => {
+        const name = card.querySelector('.feat-name').value.trim();
+        const priority = card.querySelector('.feat-priority').value;
+        const desc = card.querySelector('.feat-desc').value.trim();
+        if (name) {
+          features.push({ name, desc, priority });
+        }
+      });
+
+      const dependencies = [];
+      document.querySelectorAll('#deps-list .item-card').forEach(card => {
+        const name = card.querySelector('.dep-name').value.trim();
+        const purpose = card.querySelector('.dep-purpose').value.trim();
+        if (name) {
+          dependencies.push({ name, purpose });
+        }
+      });
+
+      return {
+        name: document.getElementById('proj-name').value.trim(),
+        type: document.getElementById('proj-type').value,
+        description: document.getElementById('proj-desc').value.trim(),
+        language: document.getElementById('proj-lang').value,
+        database: document.getElementById('proj-db').value,
+        framework: document.getElementById('proj-framework').value.trim(),
+        distribution: document.getElementById('proj-dist').value.trim(),
+        features,
+        dependencies,
+        lastUpdated: new Date().toISOString()
+      };
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.innerText = message;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // --- File IO ---
+
+    async function saveToFile() {
+      const data = getFormData();
+      const jsonString = JSON.stringify(data, null, 2);
+
+      try {
+        if (!fileHandle) {
+          if (!window.showSaveFilePicker) {
+            throw new Error("File System Access API not supported. Please use Download JSON instead.");
+          }
+          fileHandle = await window.showSaveFilePicker({
+            suggestedName: 'project_requirements_data.json',
+            types: [{
+              description: 'JSON Files',
+              accept: { 'application/json': ['.json'] },
+            }],
+          });
+        }
+
+        const writable = await fileHandle.createWritable();
+        await writable.write(jsonString);
+        await writable.close();
+        showToast("Successfully saved to workspace!");
+      } catch (err) {
+        console.error(err);
+        if (err.name !== 'AbortError') {
+          alert("Error saving: " + err.message);
+        }
+      }
+    }
+
+    function downloadFallback() {
+      const data = getFormData();
+      const jsonString = JSON.stringify(data, null, 2);
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'project_requirements_data.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast("Download started. Please save to scratch/ folder.");
+    }
+
+    async function loadFromFile() {
+      try {
+        if (window.showOpenFilePicker) {
+          const [handle] = await window.showOpenFilePicker({
+            types: [{
+              description: 'JSON Files',
+              accept: { 'application/json': ['.json'] },
+            }],
+          });
+          fileHandle = handle;
+          const file = await fileHandle.getFile();
+          const text = await file.text();
+          const data = JSON.parse(text);
+          loadFormData(data);
+          showToast("Data loaded successfully!");
+        } else {
+          const input = document.createElement('input');
+          input.type = 'file';
+          input.accept = '.json';
+          input.onchange = async (e) => {
+            const file = e.target.files[0];
+            const text = await file.text();
+            const data = JSON.parse(text);
+            loadFormData(data);
+            showToast("Data loaded successfully!");
+          };
+          input.click();
+        }
+      } catch (err) {
+        console.error(err);
+        if (err.name !== 'AbortError') {
+          alert("Failed to load: " + err.message);
+        }
+      }
+    }
+  </script>
+</body>
+</html>

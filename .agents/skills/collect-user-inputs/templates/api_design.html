@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Design Configurator</title>
+  <!-- Google Fonts: Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --font-family: 'Outfit', sans-serif;
+      --bg-primary: #fdf6e3;
+      --bg-secondary: #eee8d5;
+      --text-primary: #586e75;
+      --text-secondary: #657b83;
+      --text-muted: #93a1a1;
+      --accent: #268bd2;
+      --accent-hover: #1a6fa8;
+      --success: #859900;
+      --warning: #b58900;
+      --danger: #dc322f;
+      --orange: #cb4b16;
+      --border-color: #d3c7a1;
+      --shadow: 0 10px 30px rgba(88, 110, 117, 0.15);
+      --border-radius: 12px;
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-primary: #002b36;
+        --bg-secondary: #073642;
+        --text-primary: #93a1a1;
+        --text-secondary: #839496;
+        --text-muted: #586e75;
+        --border-color: #586e75;
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 2rem 1.5rem;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      transition: var(--transition);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      background-color: var(--bg-secondary);
+      border-radius: var(--border-radius);
+      padding: 2.5rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    header {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 1.5rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    h1 {
+      font-weight: 700;
+      font-size: 2rem;
+      color: var(--orange);
+      margin-bottom: 0.5rem;
+    }
+
+    p.subtitle {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      font-weight: 300;
+    }
+
+    .endpoints-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .endpoint-card {
+      background-color: var(--bg-primary);
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      animation: slideIn 0.25s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .endpoint-header {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .method-select {
+      font-weight: 700;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      border: 2px solid var(--border-color);
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .method-select[data-method="GET"] { color: var(--success); }
+    .method-select[data-method="POST"] { color: var(--accent); }
+    .method-select[data-method="PUT"] { color: var(--warning); }
+    .method-select[data-method="DELETE"] { color: var(--danger); }
+    .method-select[data-method="PATCH"] { color: var(--orange); }
+
+    .path-input {
+      flex: 1;
+      font-family: monospace;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .btn-delete-endpoint {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      padding: 0.5rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+    }
+
+    .section-title {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .desc-textarea {
+      font-size: 0.95rem;
+      min-height: 60px;
+    }
+
+    /* Table styles for schema fields */
+    .table-container {
+      overflow-x: auto;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background-color: var(--bg-secondary);
+      margin-bottom: 0.75rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      min-width: 600px;
+    }
+
+    th {
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+      font-weight: 600;
+      text-align: left;
+      padding: 0.75rem 1rem;
+      border-bottom: 2px solid var(--border-color);
+      position: relative;
+    }
+
+    td {
+      padding: 0.5rem;
+      border-bottom: 1px solid var(--border-color);
+      background-color: var(--bg-primary);
+    }
+
+    .th-btn-group {
+      display: inline-flex;
+      gap: 0.25rem;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+    }
+
+    .th-small-btn {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+    }
+
+    .table-input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid transparent;
+      background-color: transparent;
+      color: var(--text-primary);
+      border-radius: 4px;
+      transition: var(--transition);
+    }
+
+    .table-input:focus {
+      background-color: var(--bg-secondary);
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    /* Buttons */
+    .btn {
+      font-family: var(--font-family);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0.6rem 1.1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      border: 2px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--text-secondary);
+    }
+
+    .btn-danger {
+      background-color: var(--danger);
+      color: #ffffff;
+    }
+
+    .btn-danger:hover {
+      opacity: 0.9;
+    }
+
+    .btn-success {
+      background-color: var(--success);
+      color: #ffffff;
+    }
+
+    .btn-success:hover {
+      opacity: 0.9;
+    }
+
+    .table-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-actions {
+      border-top: 2px solid var(--border-color);
+      padding-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    /* Toast Notification */
+    #toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background-color: var(--success);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transform: translateY(150%);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 1000;
+    }
+
+    #toast.show {
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div>
+        <h1>API Interface Designer</h1>
+        <p class="subtitle">Visually model endpoints, define query params, request bodies, response shapes, and export directly as JSON.</p>
+      </div>
+      <button type="button" class="btn btn-primary" onclick="addEndpointCard()">+ Add Endpoint</button>
+    </header>
+
+    <!-- Main dynamic endpoints -->
+    <div class="endpoints-list" id="endpoints-container">
+      <!-- Endpoint cards inserted here -->
+    </div>
+
+    <!-- Actions Footer -->
+    <div class="footer-actions">
+      <div class="button-group">
+        <button type="button" class="btn btn-secondary" onclick="loadFromFile()">📁 Load Existing JSON</button>
+      </div>
+      <div class="button-group">
+        <button type="button" class="btn btn-primary" onclick="saveToFile()">💾 Save JSON to Workspace</button>
+        <button type="button" class="btn btn-success" onclick="downloadFallback()">📥 Download JSON</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast">Saved successfully!</div>
+
+  <script>
+    // PREPOPULATED_DATA: Will be replaced by the agent with current specifications if available
+    const PREPOPULATED_DATA = {
+      endpoints: [
+        {
+          id: "ep-1",
+          method: "GET",
+          path: "/users",
+          description: "Get list of users with optional filtering",
+          payloads: {
+            headers: ["Field Name", "Type", "Required", "Sample Value", "Description"],
+            rows: [
+              ["limit", "integer", "no", "10", "Max results to return"],
+              ["role", "string", "no", "admin", "Filter users by role"]
+            ]
+          }
+        },
+        {
+          id: "ep-2",
+          method: "POST",
+          path: "/users",
+          description: "Register a new user",
+          payloads: {
+            headers: ["Field Name", "Type", "Required", "Sample Value", "Description", "Validation"],
+            rows: [
+              ["email", "string", "yes", "user@example.com", "Valid email address", "format: email"],
+              ["password", "string", "yes", "********", "Minimum 8 characters password", "min_length: 8"]
+            ]
+          }
+        }
+      ]
+    };
+
+    let fileHandle = null;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadFormData(PREPOPULATED_DATA);
+    });
+
+    function loadFormData(data) {
+      const container = document.getElementById('endpoints-container');
+      container.innerHTML = '';
+      if (data && data.endpoints && Array.isArray(data.endpoints)) {
+        data.endpoints.forEach(ep => {
+          addEndpointCard(ep);
+        });
+      } else {
+        addEndpointCard();
+      }
+    }
+
+    function addEndpointCard(data = null) {
+      const container = document.getElementById('endpoints-container');
+      const epId = data ? data.id : 'ep-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5);
+      
+      const card = document.createElement('div');
+      card.className = 'endpoint-card';
+      card.id = epId;
+      
+      const method = data ? data.method : 'GET';
+      const path = data ? data.path : '';
+      const desc = data ? data.description : '';
+      
+      // Default headers
+      const defaultHeaders = ["Field Name", "Type", "Required", "Sample Value", "Description"];
+      const headers = (data && data.payloads && data.payloads.headers) ? data.payloads.headers : defaultHeaders;
+      const rows = (data && data.payloads && data.payloads.rows) ? data.payloads.rows : [];
+
+      card.innerHTML = `
+        <button type="button" class="btn btn-danger btn-delete-endpoint" onclick="deleteEndpoint('${epId}')">Remove Endpoint</button>
+        
+        <div class="endpoint-header">
+          <select class="method-select" onchange="updateMethodColor(this)" data-method="${method}">
+            <option value="GET" ${method === 'GET' ? 'selected' : ''}>GET</option>
+            <option value="POST" ${method === 'POST' ? 'selected' : ''}>POST</option>
+            <option value="PUT" ${method === 'PUT' ? 'selected' : ''}>PUT</option>
+            <option value="DELETE" ${method === 'DELETE' ? 'selected' : ''}>DELETE</option>
+            <option value="PATCH" ${method === 'PATCH' ? 'selected' : ''}>PATCH</option>
+          </select>
+          <input type="text" class="path-input table-input" placeholder="/api/v1/resource" value="${path}">
+        </div>
+
+        <div class="form-group">
+          <label>Endpoint Description</label>
+          <textarea class="desc-textarea table-input" placeholder="Describe what this endpoint does...">${desc}</textarea>
+        </div>
+
+        <div>
+          <div class="section-title">
+            <span>Payload / Schema Definition</span>
+            <div class="button-group">
+              <button type="button" class="btn btn-secondary btn-small-btn" onclick="addColumn('${epId}')">+ Add Column</button>
+              <button type="button" class="btn btn-secondary btn-small-btn" onclick="removeColumn('${epId}')">- Delete Column</button>
+            </div>
+          </div>
+          <div class="table-container">
+            <table id="table-${epId}">
+              <thead>
+                <tr>
+                  ${headers.map((h, index) => `
+                    <th data-col-index="${index}">
+                      <span class="header-text" contenteditable="true" onblur="normalizeHeader(this)">${h}</span>
+                    </th>
+                  `).join('')}
+                  <th style="width: 50px; text-align: center;">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Rows filled dynamically -->
+              </tbody>
+            </table>
+          </div>
+          <div class="table-actions">
+            <button type="button" class="btn btn-secondary" onclick="addRow('${epId}')">+ Add Field Row</button>
+          </div>
+        </div>
+      `;
+
+      container.appendChild(card);
+      
+      const selectEl = card.querySelector('.method-select');
+      updateMethodColor(selectEl);
+
+      // Add actual data rows
+      if (rows && rows.length > 0) {
+        rows.forEach(rowData => addRow(epId, rowData));
+      } else {
+        addRow(epId);
+      }
+    }
+
+    function deleteEndpoint(id) {
+      if (confirm("Are you sure you want to remove this endpoint?")) {
+        document.getElementById(id).remove();
+      }
+    }
+
+    function updateMethodColor(selectEl) {
+      const method = selectEl.value;
+      selectEl.setAttribute('data-method', method);
+    }
+
+    function normalizeHeader(span) {
+      const txt = span.innerText.trim();
+      if (!txt) span.innerText = "Column";
+    }
+
+    // Add row to payload table
+    function addRow(epId, rowData = null) {
+      const table = document.getElementById(`table-${epId}`);
+      const tbody = table.querySelector('tbody') || table.appendChild(document.createElement('tbody'));
+      const headerCount = table.querySelectorAll('thead th').length - 1; // subtract action column
+      
+      const tr = document.createElement('tr');
+      
+      for (let i = 0; i < headerCount; i++) {
+        const val = (rowData && rowData[i] !== undefined) ? rowData[i] : '';
+        const td = document.createElement('td');
+        td.innerHTML = `<input type="text" class="table-input" value="${val}" placeholder="...">`;
+        tr.appendChild(td);
+      }
+
+      const actionTd = document.createElement('td');
+      actionTd.style.textAlign = 'center';
+      actionTd.innerHTML = `<button type="button" class="btn btn-danger btn-small-btn" onclick="this.closest('tr').remove()" style="padding: 0.35rem 0.6rem;">Delete</button>`;
+      tr.appendChild(actionTd);
+      
+      tbody.appendChild(tr);
+    }
+
+    // Add custom column to payload table
+    function addColumn(epId) {
+      const colName = prompt("Enter column header name:", "Constraint");
+      if (!colName) return;
+
+      const table = document.getElementById(`table-${epId}`);
+      
+      // 1. Add to thead
+      const theadRow = table.querySelector('thead tr');
+      const actionTh = theadRow.lastElementChild;
+      
+      const newTh = document.createElement('th');
+      newTh.innerHTML = `<span class="header-text" contenteditable="true" onblur="normalizeHeader(this)">${colName}</span>`;
+      theadRow.insertBefore(newTh, actionTh);
+
+      // 2. Add input cell to each tbody row
+      table.querySelectorAll('tbody tr').forEach(tr => {
+        const actionTd = tr.lastElementChild;
+        const newTd = document.createElement('td');
+        newTd.innerHTML = `<input type="text" class="table-input" value="" placeholder="...">`;
+        tr.insertBefore(newTd, actionTd);
+      });
+    }
+
+    // Remove last custom column from table
+    function removeColumn(epId) {
+      const table = document.getElementById(`table-${epId}`);
+      const theadRow = table.querySelector('thead tr');
+      const ths = theadRow.children;
+      
+      // Keep at least "Field Name" and "Type" (index 0, 1) and action th (last index)
+      if (ths.length <= 3) {
+        alert("Cannot delete core columns.");
+        return;
+      }
+      
+      if (!confirm("Are you sure you want to delete the last column? All cell data in this column will be lost.")) {
+        return;
+      }
+
+      // Column to delete is index length-2 (just before Action column)
+      const targetIndex = ths.length - 2;
+      ths[targetIndex].remove();
+
+      table.querySelectorAll('tbody tr').forEach(tr => {
+        const tds = tr.children;
+        tds[targetIndex].remove();
+      });
+    }
+
+    // Collect UI structure to JS Object
+    function getFormData() {
+      const endpoints = [];
+      document.querySelectorAll('.endpoint-card').forEach(card => {
+        const id = card.id;
+        const method = card.querySelector('.method-select').value;
+        const path = card.querySelector('.path-input').value.trim();
+        const description = card.querySelector('.desc-textarea').value.trim();
+
+        const table = document.getElementById(`table-${id}`);
+        
+        // Headers
+        const headers = [];
+        table.querySelectorAll('thead th').forEach((th, index) => {
+          // ignore action column
+          if (index < table.querySelectorAll('thead th').length - 1) {
+            headers.push(th.querySelector('.header-text').innerText.trim());
+          }
+        });
+
+        // Rows
+        const rows = [];
+        table.querySelectorAll('tbody tr').forEach(tr => {
+          const rowValues = [];
+          tr.querySelectorAll('td').forEach((td, index) => {
+            if (index < tr.querySelectorAll('td').length - 1) {
+              rowValues.push(td.querySelector('input').value.trim());
+            }
+          });
+          // Only add row if not completely empty
+          if (rowValues.some(v => v !== '')) {
+            rows.push(rowValues);
+          }
+        });
+
+        endpoints.push({
+          id,
+          method,
+          path,
+          description,
+          payloads: {
+            headers,
+            rows
+          }
+        });
+      });
+
+      return {
+        endpoints,
+        lastUpdated: new Date().toISOString()
+      };
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.innerText = message;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // --- File IO ---
+
+    async function saveToFile() {
+      const data = getFormData();
+      const jsonString = JSON.stringify(data, null, 2);
+
+      try {
+        if (!fileHandle) {
+          if (!window.showSaveFilePicker) {
+            throw new Error("File System Access API not supported. Please use Download JSON instead.");
+          }
+          fileHandle = await window.showSaveFilePicker({
+            suggestedName: 'api_design_data.json',
+            types: [{
+              description: 'JSON Files',
+              accept: { 'application/json': ['.json'] },
+            }],
+          });
+        }
+
+        const writable = await fileHandle.createWritable();
+        await writable.write(jsonString);
+        await writable.close();
+        showToast("Successfully saved to workspace!");
+      } catch (err) {
+        console.error(err);
+        if (err.name !== 'AbortError') {
+          alert("Error saving: " + err.message);
+        }
+      }
+    }
+
+    function downloadFallback() {
+      const data = getFormData();
+      const jsonString = JSON.stringify(data, null, 2);
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'api_design_data.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast("Download started. Please save to scratch/ folder.");
+    }
+
+    async function loadFromFile() {
+      try {
+        if (window.showOpenFilePicker) {
+          const [handle] = await window.showOpenFilePicker({
+            types: [{
+              description: 'JSON Files',
+              accept: { 'application/json': ['.json'] },
+            }],
+          });
+          fileHandle = handle;
+          const file = await fileHandle.getFile();
+          const text = await file.text();
+          const data = JSON.parse(text);
+          loadFormData(data);
+          showToast("Data loaded successfully!");
+        } else {
+          const input = document.createElement('input');
+          input.type = 'file';
+          input.accept = '.json';
+          input.onchange = async (e) => {
+            const file = e.target.files[0];
+            const text = await file.text();
+            const data = JSON.parse(text);
+            loadFormData(data);
+            showToast("Data loaded successfully!");
+          };
+          input.click();
+        }
+      } catch (err) {
+        console.error(err);
+        if (err.name !== 'AbortError') {
+          alert("Failed to load: " + err.message);
+        }
+      }
+    }
+  </script>
+</body>
+</html>
