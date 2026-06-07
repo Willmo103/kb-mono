@@ -5,6 +5,11 @@ All notable changes to the KB Stack Monorepo will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 2026-06-06
+
+### Changed
+- Bumped nested `kb-web` package version to `0.1.18` to incorporate virtual sites grouping, same-domain scraped link-ingestion confirmation modals, collapsible markdown content rendering, and sidebar layout updates.
+
 ## [0.1.1] - 2026-06-06
 
 ### Changed

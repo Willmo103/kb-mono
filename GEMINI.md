@@ -29,6 +29,12 @@ This is the public monorepo for the `kb` (Knowledge-Base) suite of applications.
 
 ## Repo Structure
 
+### `_tasks/`
+This is where the user will place markdown files that describe tasks that have very specialized or long instructions for a task they want to achieve in the kb stack.
+
+### `_pending_imports/`
+This is where the user will place code references they want to use for a specific task; The user will specify which files and how to use them in the accompanying task request. **When the agent is done with a specific file(s), they should store then in the `artifacts` database attached to the user's request text for a given task.**
+
 ### `remotes/`
 This is the primary directory where all active `kb` packages are cloned. Each subdirectory represents a standalone git repository.
 - **Operations**: Agents review, refactor, and update these packages, maintaining standard build scripts, unit tests, and local documentation.
@@ -74,6 +80,7 @@ This directory contains internal **AGENT** documentation. Every development loop
 - [kb-rss Walkthrough - May 30, 2026](docs/kb_rss-walkthrough.md)
 - [kb-web Importer Walkthrough - May 30, 2026](docs/kb_web-walkthrough.md)
 - [kb-web Settings & Extension Walkthrough - May 31, 2026](docs/kb_web-walkthrough-pt2.md)
+- [kb-web Virtual Sites & Links Integration - June 6, 2026](docs/kb_web_virtual_sites_and_links_v5_060626.md)
 `[/AGENT DOCS SECTION]`
 
 ### `scripts/`
