@@ -82,6 +82,8 @@ This directory contains internal **AGENT** documentation. Every development loop
 - [kb-web Settings & Extension Walkthrough - May 31, 2026](docs/kb_web-walkthrough-pt2.md)
 - [kb-web Virtual Sites & Links Integration - June 6, 2026](docs/kb_web_virtual_sites_and_links_v5_060626.md)
 - [kb-web Virtual Sites & Links Layout Adjustment - June 7, 2026](docs/kb_web_virtual_sites_and_links_v5_adjustment_060726.md)
+- [kb-web Layout & Link Ingestion Updates - June 8, 2026](docs/kb_web_layout_and_link_updates_060826.md)
+- [KB Clipboard Ignore Patterns - June 8, 2026](docs/kb_clipboard_ignore_patterns_060826.md)
 `[/AGENT DOCS SECTION]`
 
 ### `scripts/`
