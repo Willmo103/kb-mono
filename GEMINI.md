@@ -81,6 +81,7 @@ This directory contains internal **AGENT** documentation. Every development loop
 - [kb-web Importer Walkthrough - May 30, 2026](docs/kb_web-walkthrough.md)
 - [kb-web Settings & Extension Walkthrough - May 31, 2026](docs/kb_web-walkthrough-pt2.md)
 - [kb-web Virtual Sites & Links Integration - June 6, 2026](docs/kb_web_virtual_sites_and_links_v5_060626.md)
+- [kb-web Virtual Sites & Links Layout Adjustment - June 7, 2026](docs/kb_web_virtual_sites_and_links_v5_adjustment_060726.md)
 `[/AGENT DOCS SECTION]`
 
 ### `scripts/`
