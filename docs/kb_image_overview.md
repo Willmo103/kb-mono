@@ -14,9 +14,10 @@ The package is structured as a standalone python package with the following modu
 - **[image_describer.py](../remotes/kb-image/src/kb_image/image_describer.py)**: Connects to Ollama (via LLAVA/multimodal LLMs) to generate detailed, contextual descriptions of imported images.
 - **[image_tagger.py](../remotes/kb-image/src/kb_image/image_tagger.py)**: Processes descriptions to automatically generate tags for uncategorized images using Ollama chat prompts.
 - **[cli.py](../remotes/kb-image/src/kb_image/cli.py)**: Main entry point for the `kb-image` command-line utility. Defines commands:
-  - `import`: Imports a single file (`-f`), directory (`-d`), or url (`-u`).
+  - `import`: Imports a single file (`-f`), directory (`-d`), or url (`-u`). Supports the `--quick` / `-q` flag to import metadata-only without generating base64 images and thumbnails.
   - `serve`: Launches the compiled Electron desktop application.
   - `tag`: Automatically loops through untagged database rows and generates tags.
+  - `fill`: Back-fills missing base64 original images and thumbnails from disk. Supports `--all`, `--limit <limit>`, `--hash <hash>`, and `--path <path>` to target records.
 
 ## Desktop User Interface
 

@@ -5,6 +5,11 @@ All notable changes to the KB Stack Monorepo will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.5] - 2026-06-08
+
+### Changed
+- Bumped nested `kb-image` package version to `0.1.7` to introduce Quick Scan (Metadata-Only) Mode (`--quick` / `-q` option) for image indexing and a `fill` CLI subcommand to back-fill base64 images and thumbnails from disk on-demand.
+
 ## [0.1.4] - 2026-06-08
 
 ### Changed
