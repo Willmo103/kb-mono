@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.6] - 2026-06-13
 
 ### Changed
-- Bumped nested `kb-web` package version to `0.1.20` to incorporate a separate `youtube_videos` database table for metadata, a dedicated YouTube videos listing section filterable by creator, embedded YouTube iframes in article pages, specialized `youtube_wiki_prompt` prompt options, markdown lists formatting preprocessing, and systemd `kb-web-mcp.service` configuration file.
+- Bumped nested `kb-web` package version to `0.1.20` to incorporate a separate `youtube_videos` database table for metadata, a dedicated YouTube videos listing section filterable by creator, embedded YouTube iframes in article pages, specialized `youtube_wiki_prompt` prompt options, markdown lists formatting preprocessing, systemd `kb-web-mcp.service` configuration file, attributes display panel for video pages, and a video metadata regeneration action button.
 
 ## [0.1.5] - 2026-06-08
 
