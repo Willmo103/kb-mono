@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added a local `.secrets` file containing the logging location path, ignored in git via `.gitignore`.
 
 ### Changed
-- Bumped nested `kb-web` package version to `0.1.25` which implements dynamic General Collection lookup, database lock resolutions via transaction commits, YouTube transcript/metadata scraping on HTML/page ingestion, and bytes/BLOB column hex encoding/decoding during database JSON export/import.
+- Bumped nested `kb-web` package version to `0.1.25` which implements dynamic General Collection lookup, database lock resolutions via transaction commits, YouTube transcript/metadata scraping on HTML/page ingestion, bytes/BLOB column hex encoding/decoding during database JSON export/import, database logging for Ollama calls (`ollama_logs`), and a 90-second client connection timeout to prevent hangs.
 
 ## [0.1.8] - 2026-06-14
 
