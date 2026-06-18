@@ -84,6 +84,8 @@ This directory contains internal **AGENT** documentation. Every development loop
 - [kb-web Virtual Sites & Links Layout Adjustment - June 7, 2026](docs/kb_web_virtual_sites_and_links_v5_adjustment_060726.md)
 - [kb-web Layout & Link Ingestion Updates - June 8, 2026](docs/kb_web_layout_and_link_updates_060826.md)
 - [KB Clipboard Ignore Patterns - June 8, 2026](docs/kb_clipboard_ignore_patterns_060826.md)
+- [Qdrant and EmbeddingGemma Integration - June 16, 2026](docs/qdrant_and_embeddinggemma_integration.md)
+- [Logging Resolution & Workflow Addition - June 18, 2026](docs/logging_resolution_and_workflow_addition_061826.md)
 `[/AGENT DOCS SECTION]`
 
 ### `scripts/`
@@ -93,6 +95,7 @@ This directory houses scripts for tasks of this monorepo, such as initializing r
 
 ## System Folders and Files
 
+- `.secrets` - Local environment variables file containing paths (e.g. `LOG_LOCATION`) and credentials, ignored by git.
 - `_pending_imports/` - Directory holding code waiting to be refactored and migrated into `remotes/`.
 - `_tasks/` - Directory used by the user to house change-requests; these are markdown files containing instructions about proposed changes to a project. The user will specify a file here for the agent to use as a guide for a given task.
 - `artifacts.db` - SQLite database containing the tables (`remotes_index`, `changes`, `issues`, `plans`, `tasks`) for tracking CI/CD development, user requests, and agent actions.

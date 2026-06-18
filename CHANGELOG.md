@@ -5,6 +5,25 @@ All notable changes to the KB Stack Monorepo will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.9] - 2026-06-18
+
+### Added
+- Added `/resolve-logging-issues` workflow (`.agents/workflows/resolve-logging-issues.md`) to guide agents through reading logs from local `.secrets` config, checking out feature branches, clarifying task details using `/grill-me`, and implementing fixes with pre-commit gates.
+- Added a local `.secrets` file containing the logging location path, ignored in git via `.gitignore`.
+
+### Changed
+- Bumped nested `kb-web` package version to `0.1.25` which implements dynamic General Collection lookup, database lock resolutions via transaction commits, YouTube transcript/metadata scraping on HTML/page ingestion, and bytes/BLOB column hex encoding/decoding during database JSON export/import.
+
+## [0.1.8] - 2026-06-14
+
+### Changed
+- Bumped nested `kb-web` package version to `0.1.23` to fix invisible collection actions buttons, allow accepting multiple AI suggestions consecutively via AJAX updates without page reload, and set `think=False` across all remaining Ollama chat interactions to reduce latency.
+
+## [0.1.7] - 2026-06-14
+
+### Changed
+- Bumped nested `kb-web` package version to `0.1.22` to modularize server logic, implement FastAPI APIRouters, integrate Gotify crash tracebacks logging, embed logs viewer panel on the admin page, add Obsidian-like Vis.js similarity graph visualizer, add custom collections groupings manager with AI-suggested classifications, and support interval-based cron tasks with prompt templates and execution history logs.
+
 ## [0.1.6] - 2026-06-13
 
 ### Changed
